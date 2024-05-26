@@ -6,7 +6,7 @@ public class Class {
         System.out.println("Input: ");
         String expression = scanner.nextLine();
 
-        expression = expression.replace("\"", " ");
+        //expression = expression.replace("\"", " ");
         String[] data;
         char action;
         if (expression.contains("+")) {
@@ -28,9 +28,11 @@ public class Class {
             if (data[1].contains("\""))
                 throw new Exception("You can multiply or divide only in integer");
         }
+
         if (data[0].length() > 10 || data[1].length() > 10)
             throw new Exception("Input number or string is too large");
-
+        data[0] = data[0].replace("\"", "");
+        data[1] = data[1].replace("\"", "");
         String regex = "[^\\d]+";
         String[] str = data[0].split(regex);
         for(String st: str){
