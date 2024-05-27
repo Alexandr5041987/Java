@@ -1,90 +1,135 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
-public class Class {
+
+public class Main {
     static Scanner scanner = new Scanner(System.in);
+    static int number;
+    static char operation;
+    static String result;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         System.out.println("Input: ");
-        String expression = scanner.nextLine();
-
-        //expression = expression.replace("\"", " ");
-        String[] data;
-        char action;
-        if (expression.contains("+")) {
-            data = expression.split("\\+");
-            action = '+';
-        } else if (expression.contains("-")) {
-            data = expression.split("-");
-            action = '-';
-        } else if (expression.contains("*")) {
-            data = expression.split("\\*");
-            action = '*';
-        } else if (expression.contains("/")) {
-            data = expression.split("/");
-            action = '/';
-        } else {
-            throw new Exception("Invalid input");
-        }
-        if (action == '*' || action == '/'){
-            if (data[1].contains("\""))
-                throw new Exception("You can multiply or divide only in integer");
-        }
-
-        if (data[0].length() > 10 || data[1].length() > 10)
-            throw new Exception("Input number or string is too large");
-        data[0] = data[0].replace("\"", "");
-        data[1] = data[1].replace("\"", "");
-        String regex = "[^\\d]+";
-        String[] str = data[0].split(regex);
-        for(String st: str){
-            throw new Exception("The first argument can not be a number");
-        }
-
-
-        for (int i=0; i<data.length; i++){
-            data[i] = data[i].replace("\"", "");
-        }
-        if (action == '+') {
-            System.out.println("Output: ");
-            printInQuotes(data[0] + data[1]);
-        }
-        else if (action == '*') {
-            int multiply = Integer.parseInt(data[1]);
-            String result ="";
-            for(int i=0; i< multiply; i++) {
-                result+=data[0];
-            }
-
-            int length = result.length();
-            if (length>40) {
-                result = result.substring(0, 40);
-                System.out.println("Output: ");
-                printInQuotes(result + "...");
-            }
-            else {
-                System.out.println("Output: ");
-                printInQuotes(result);
-            }
-        }
-        else if (action == '-') {
-            int index = data[0].indexOf(data[1]);
-            if (index == -1) {
-                printInQuotes(data[0]);
-            }else{
-                String result = data[0].substring(0,index);
-                result+=data[0].substring(index+data[1].length());
-                System.out.println("Output: ");
-                printInQuotes(result);
-            }
-        }    else{
-            int newLen = data[0].length()/Integer.parseInt(data[1]);
-            String result = data[0].substring(0,newLen);
-            System.out.println("Output: ");
-            printInQuotes(result);
-        }
-
+//      Считываем строку userInput которую ввёл пользователь
+        String userInput = scanner.nextLine();
+        operation = metodOperation(userInput);
+        System.out.println("Output: ");
+        globalWork(userInput);
     }
 
-    static void printInQuotes(String text){
-        System.out.println("\""+text+"\"");
+    private static void globalWork(String userInput) {
+        String[] blocks = userInput.split("[+-/*\"]");
+        if (blocks.length == 5) {
+            String st01 = blocks[1];
+            String st04 = blocks[4];
+            result = calculated(st01, st04, operation);
+            if (result.length() > 40) {
+                String rez = result.substring(0, 40);
+                System.out.println(rez + "...");
+            } else {
+                System.out.println(result);
+            }
+        } else {              //            blocks.length == 4;
+            String st01 = blocks[1];
+            String st03 = blocks[3];
+            number = Integer.parseInt(st03);
+            result = calculated(st01, number, operation);
+            if (result.length() > 40) {
+                String rez = result.substring(0, 40);
+                System.out.println(rez + "...");
+            } else {
+                System.out.println(result);
+            }
+
+        }
+    }
+
+    //         Метод поиска знака операции
+    private static char metodOperation(String userInput) {
+        char[] uchar = new char[26];
+//      Заполняем символьный массив символами строки которую ввел пользователь и по ходу ловим знак операции
+        for (int i = 0; i < userInput.length(); i++) {
+            uchar[i] = userInput.charAt(i);
+            if (uchar[i] == '+') {
+                operation = '+';
+            }
+            if (uchar[i] == '-') {
+                operation = '-';
+            }
+            if (uchar[i] == '*') {
+                operation = '*';
+            }
+            if (uchar[i] == '/') {
+                operation = '/';
+            }
+        }
+        return operation;
+    }
+
+    //Metoд для двух строк  calculated(String num1, String num2, char op)
+    public static String calculated(String num1, String num2, char op) {
+
+        switch (op) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                int resA = num1.length() - num2.length();
+                if (num1.length() == num2.length()) {
+                    result = "0";
+                } else {
+                    result = num1.substring(0, resA);
+                }
+                break;
+            case '*':
+                System.out.println("Неверный знак операции * (введите + или -)");
+                break;
+            case '/':
+                System.out.println("Неверный знак операции / (введите + или -)");
+                break;
+            default:
+                throw new IllegalArgumentException("Не верный знак операции");
+        }
+        return result;
+    }
+
+    //    Metoд для строки и числа calculated(calculated(String num1, int num, char op))
+    public static String calculated(String num1, int num, char op) {
+
+        switch (op) {
+            case '+':
+                System.out.println("Неверный знак операции + (введите * или /)");
+
+                break;
+            case '-':
+                System.out.println("Неверный знак операции - (введите * или /)");
+                break;
+            case '*':
+// 160  При умножении строки на число выводит правильный ответ но впереди null ("a" * 5 = nullaaaaa)?
+                for (int u = 0; u < num; u++) {
+                    result = result + num1;
+                }
+                break;
+            case '/':
+                try {
+                    int resB = num1.length() / num;
+                    if (num1.length() == num) {
+                        result = "1";
+                    } else {
+                        result = num1.substring(0, resB);
+                    }
+                } catch (ArithmeticException | InputMismatchException e) {
+                    System.out.println("Exception : " + e);
+                    System.out.println("Only integer non-zero parameters allowed");
+                    break;
+                } finally {
+                    if (num1.length() < num) {
+                        System.out.println("Делимое меньше делителя");
+                    }
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Не верный знак операции");
+        }
+        return result;
     }
 }
