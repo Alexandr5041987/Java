@@ -16,12 +16,8 @@ public class Main {
             data[i] = data[i].replace("\"", "");
             if (data[0].length() > 10 || data[1].length() > 10)
                 throw new Exception("Input number or string is too large");
-            String regex = "[^\\d]+";
-            String[] str = data[0].split(regex);
-            for (String st : str) {
-                throw new Exception("The first argument can not be a number");
-            }
         }
+
         if (action == '+') {
             data = userInput.split("\\+");
             for (int i = 0; i < data.length; i++) {
@@ -66,6 +62,11 @@ public class Main {
             int newLen = data[0].length() / Integer.parseInt(data[1]);
             String result = data[0].substring(0, newLen);
             inQuotes.printInQuotes(result);
+        }
+        String regex = "[^\\d]+";
+        String[] str = data[0].split(regex);
+        for (String st : str) {
+            throw new Exception("The first argument can not be a number");
         }
     }
 
