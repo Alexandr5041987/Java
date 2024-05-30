@@ -9,10 +9,11 @@ public class Main {
         String userInput = scanner.nextLine();
         action = metodOperation(userInput);
         System.out.println("Output: ");
-        String[] data;
-        data = userInput.split("[+\\-*/]");
+        String[] data = userInput.split("[+\\-*/]");
+
 
         for (int i=0; i<data.length; i++) {
+            data[i] = data[i].replace("\"", "");
             if (data[0].length() > 10 || data[1].length() > 10)
                 throw new Exception("Input number or string is too large");
             String regex = "[^\\d]+";
@@ -73,7 +74,7 @@ public class Main {
 
         char action;
         String[] data;
-        
+
 //      Заполняем символьный массив символами строки которую ввел пользователь и по ходу ловим знак операции
         if (userInput.contains("+")) {
             data = userInput.split("\\+");
