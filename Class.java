@@ -10,7 +10,17 @@ public class Main {
         action = metodOperation(userInput);
         System.out.println("Output: ");
         String[] data;
+        data = userInput.split("[+\\-*/]");
 
+        for (int i=0; i<data.length; i++) {
+            if (data[0].length() > 10 || data[1].length() > 10)
+                throw new Exception("Input number or string is too large");
+            String regex = "[^\\d]+";
+            String[] str = data[0].split(regex);
+            for (String st : str) {
+                throw new Exception("The first argument can not be a number");
+            }
+        }
         if (action == '+') {
             data = userInput.split("\\+");
             for (int i = 0; i < data.length; i++) {
@@ -35,9 +45,9 @@ public class Main {
                 inQuotes.printInQuotes(result);
             }
         } else if (action == '-') {
-            data = userInput.split("-");
+            data = userInput.split("\"-");
             for (int i = 0; i < data.length; i++) {
-                data[i] = data[i].replace("\"", "");
+               data[i] = data[i].replace("\"", "");
             }
             int index = data[0].indexOf(data[1]);
             if (index == -1) {
@@ -45,7 +55,6 @@ public class Main {
             } else {
                 String result = data[0].substring(0, index);
                 result += data[0].substring(index + data[1].length());
-                System.out.println("Output: ");
                 inQuotes.printInQuotes(result);
             }
         } else if (action == '/') {
@@ -57,21 +66,6 @@ public class Main {
             String result = data[0].substring(0, newLen);
             inQuotes.printInQuotes(result);
         }
-
-        if (action == '*' || action == '/') {
-            data = userInput.split("");
-            if (data[1].contains("\""))
-                throw new Exception("You can multiply or divide only in integer");
-        }
-        data = userInput.split("");
-        if (data[0].length() > 10 || data[1].length() > 10)
-            throw new Exception("Input number or string is too large");
-
-        String regex = "[^\\d]+";
-        String[] str = data[0].split(regex);
-        for (String st : str) {
-            throw new Exception("The first argument can not be a number");
-        }
     }
 
     //         Метод поиска знака операции
@@ -79,10 +73,7 @@ public class Main {
 
         char action;
         String[] data;
-//        data = userInput.split(" ");
-//        for (int i = 0; i < data.length; i++) {
-//            data[i] = data[i].replace("\"", "");
-//        }
+        
 //      Заполняем символьный массив символами строки которую ввел пользователь и по ходу ловим знак операции
         if (userInput.contains("+")) {
             data = userInput.split("\\+");
