@@ -63,11 +63,6 @@ public class Main {
             String result = data[0].substring(0, newLen);
             inQuotes.printInQuotes(result);
         }
-        String regex = "[^\\d]+";
-        String[] str = data[0].split(regex);
-        for (String st : str) {
-            throw new Exception("The first argument can not be a number");
-        }
     }
 
     //         Метод поиска знака операции
